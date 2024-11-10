@@ -1,33 +1,45 @@
 const point = document.getElementById('point');
-let position = { x: 50, y: 50 }; // Начальная позиция точки
+let position = { x: 150, y: 150 };
+const step = 3; 
 
-// Функция для обновления позиции точки
+// Границы
+const boundaries = {
+    minX: 0,
+    minY: 0,
+    maxX: 400,
+    maxY: 400
+};
+
 function updatePosition() {
     point.style.left = position.x + 'px';
     point.style.top = position.y + 'px';
 }
 
-// Обработчик событий для нажатия клавиш
 document.addEventListener('keydown', function(event) {
-    const step = 10; // Шаг перемещения
-
     switch (event.key) {
-        case 'ArrowUp': // Стрелка вверх
-            position.y -= step;
+        case 'ArrowUp':
+            if (position.y - step >= boundaries.minY) { // Проверка на верхнюю границу
+                position.y -= step;
+            }
             break;
-        case 'ArrowDown': // Стрелка вниз
-            position.y += step;
+        case 'ArrowDown':
+            if (position.y + step <= boundaries.maxY - point.offsetHeight) { // Проверка на нижнюю границу
+                position.y += step;
+            }
             break;
-        case 'ArrowLeft': // Стрелка влево
-            position.x -= step;
+        case 'ArrowLeft':
+            if (position.x - step >= boundaries.minX) { // Проверка на левую границу
+                position.x -= step;
+            }
             break;
-        case 'ArrowRight': // Стрелка вправо
-            position.x += step;
+        case 'ArrowRight': 
+            if (position.x + step <= boundaries.maxX - point.offsetWidth) { // Проверка на правую границу
+                position.x += step;
+            }
             break;
     }
 
-    updatePosition(); // Обновляем позицию точки
+    updatePosition();
 });
 
-// Инициализация позиции точки
 updatePosition();
